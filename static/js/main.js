@@ -68,7 +68,7 @@ function recursiveDrawRectangles(canv, rect, level, color) {
     }   
 }
 function createTree(maxNodes, numberOfNodes, canvas, batchCreate, renderConstruction, distanceMetric, seed=0) {
-    /*distanceMetric can be "hilbert" or "z-order" or "row-major"
+    /*distanceMetric can be "hilbert" or "z-order" or "row-major" or "random"
     */
     if (seed == 0){
         seed = Math.random();
@@ -127,6 +127,61 @@ function createTree(maxNodes, numberOfNodes, canvas, batchCreate, renderConstruc
     recursiveDrawRectangles(canvas, tree.root, 1);
     return tree;
 }
+
+function showCurve(maxNodes, numberOfNodesPerSide, canvas, batchCreate, renderConstruction, distanceMetric, seed=0) {
+    /*distanceMetric can be "hilbert" or "z-order" or "row-major" or "random"
+    */
+    var tree = new RTree(maxNodes, distanceMetric);
+    var maxX = (canvas.width - 100);
+    var maxY = (canvas.height - 100);
+    var minWidth = 10;
+    var minHeight = 10;
+    var maxWidth = minWidth + 10;
+    var maxHeight = minHeight + 10;
+    var nodes = _.map(_.range(numberOfNodesPerSide*numberOfNodesPerSide), function (i) {
+        var data = {};
+
+        ii = (Math.floor(i/numberOfNodesPerSide))/numberOfNodesPerSide;
+        jj = (i%numberOfNodesPerSide)/numberOfNodesPerSide;
+        alert(i + " " + ii + " " + jj + " ");
+        data.x = Math.floor(ii * (maxX - minWidth));
+        data.y = Math.floor(jj * (maxY - minHeight));
+        alert(i + " " + data.y + " " + data.x + " ");
+        data.width = 10;
+        data.height = 10;
+
+        var minCoordinate = 0;
+        var maxCoordinate = maxX - minWidth;
+        var x_centroid = data.x;//Math.ceil(data.x + data.width * 0.5) - minCoordinate;
+        var y_centroid = data.y;//Math.ceil(data.y + data.height * 0.5) - minCoordinate;
+
+        var orderNumber = 0;
+
+        if (distanceMetric == "hilbert"){
+                orderNumber = HilbertCurves.toHilbertCoordinates(numberOfNodesPerSide, ii*numberOfNodesPerSide, jj*numberOfNodesPerSide);
+            } else if (distanceMetric == "z-order"){
+                orderNumber = HilbertCurves.toZCoordinates(numberOfNodesPerSide, ii*numberOfNodesPerSide, jj*numberOfNodesPerSide);                
+            } else if (distanceMetric == "row-major"){
+                orderNumber = HilbertCurves.toRowMajorCoordinates(numberOfNodesPerSide, ii*numberOfNodesPerSide, jj*numberOfNodesPerSide);                
+            } else if (distanceMetric == "scan"){
+                orderNumber = HilbertCurves.toScanCoordinates(numberOfNodesPerSide, ii*numberOfNodesPerSide, jj*numberOfNodesPerSide);                
+            } else if (distanceMetric == "random"){
+                orderNumber = HilbertCurves.toRandomCoordinates(numberOfNodesPerSide, ii*numberOfNodesPerSide, jj*numberOfNodesPerSide);                
+            } else {
+                alert("kyaghjsldf");
+            }
+        data.data = orderNumber;
+        return data;
+    });
+    var ctx = canvas.getContext("2d");
+    if (batchCreate) {
+        tree.batchInsert(nodes);
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    recursiveDrawRectangles(canvas, tree.root, 1);
+    return tree;
+}
+
 function searchTree(tree, x, y, width, height, canvas, viewModel, logResults=1) {
     var searchRect = {
         x: x,
@@ -159,11 +214,18 @@ $(document).ready(function () {
         iterationResults: ko.observableArray(),
         batchConstruct: ko.observable(true),
         intermediateRender: ko.observable(false),
+        showHilbert: function () {
+            tree = showCurve(1000, 8, canvas, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "hilbert");
+            tree = showCurve(1000, 8, canvas2, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "z-order");
+            tree = showCurve(1000, 8, canvas3, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "row-major");
+            tree = showCurve(1000, 8, canvas4, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "scan");
+            tree = showCurve(1000, 8, canvas5, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "random");
+        },
         createNewTree: function () {
             var maxNodes = document.getElementById("MaxNodesInput").value;
             var numberOfNodes = document.getElementById("NNodesInput").value;
             tree = createTree(maxNodes, numberOfNodes, canvas, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "z-order");
-        },
+        },        
         queryTree: function () {
             x=canvas.width * Math.random()/2;
             y=canvas.height * Math.random()/2; 
@@ -177,18 +239,29 @@ $(document).ready(function () {
             var numberOfNodes = document.getElementById("NNodesInput").value;
             var nTrials = document.getElementById("NTrialsInput").value;
 
-            var seed = Math.random();
+            var seed = Number(document.getElementById("SeedInput").value);
+            if (seed==0){
+                seed=Math.floor(Math.random()*1000);
+            }
+
             HilbertTree = createTree(maxNodes, numberOfNodes, canvas, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "hilbert", seed);
             ZTree = createTree(maxNodes, numberOfNodes, canvas2, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "z-order", seed);
             RowMajorTree = createTree(maxNodes, numberOfNodes, canvas3, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "row-major", seed);            
-            RandomTree = createTree(maxNodes, numberOfNodes, canvas3, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "random", seed);            
+            ScanTree = createTree(maxNodes, numberOfNodes, canvas4, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "scan", seed);            
+            RandomTree = createTree(maxNodes, numberOfNodes, canvas5, myViewModel.batchConstruct(), myViewModel.intermediateRender(), "random", seed);            
 
             var queryRectangles = [];
+            function pseudoRandom() {
+                var x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            }
+
+
             for (var i = 0; i < nTrials; i++){
-                queryRectangles.push([canvas.width * Math.random()/2, 
-                                 canvas.height * Math.random()/2, 
-                                 canvas.width * Math.random()/2, 
-                                 canvas.height * Math.random()/2]);
+                queryRectangles.push([canvas.width * pseudoRandom()/2, 
+                                 canvas.height * pseudoRandom()/2, 
+                                 canvas.width * pseudoRandom()/8, 
+                                 canvas.height * pseudoRandom()/8]);
             }
 
             // var d = new Date();
@@ -196,6 +269,7 @@ $(document).ready(function () {
             var HilbertTimeTotal = 0;
             var ZTimeTotal = 0;
             var RowMajorTimeTotal = 0;
+            var ScanTimeTotal = 0;
             var RandomTimeTotal = 0;
             for (var i = 0; i < nTrials; i++){
                 var x = queryRectangles[i][0];
@@ -222,38 +296,32 @@ $(document).ready(function () {
                 RowMajorTimeTotal += d.getTime() - RowMajorStartTime; 
                 //===========================================================   
                 var d = new Date();
+                var ScanStartTime = d.getTime();                                          
+                searchTree(ScanTree, x, y, w, h, canvas4, myViewModel, 0);
+                d = new Date();
+                ScanTimeTotal += d.getTime() - ScanStartTime;                 
+                //===========================================================   
+                var d = new Date();
                 var RandomStartTime = d.getTime();                                          
-                searchTree(RandomTree, x, y, w, h, canvas4, myViewModel, 0);
+                searchTree(RandomTree, x, y, w, h, canvas5, myViewModel, 0);
                 d = new Date();
                 RandomTimeTotal += d.getTime() - RandomStartTime;                                                           
             }
 
-
-            // var hilbertPrefix = "";
-            // var ZPrefix = "";            
-            // if (HilbertTimeTotal < ZTimeTotal){
-            //     hilbertPrefix = "*";
-            // } else {
-            //     ZPrefix = "*";  
+            var cpu_time = [[HilbertTimeTotal, "Hilbert"], [ZTimeTotal, "Z-Order"], [RowMajorTimeTotal, "Row-Major"],[ScanTimeTotal, "Scan"], [RandomTimeTotal, "Random"]].sort();
+            // for(var i = 0; i < cpu_time.length; i++){
+            //     myViewModel.searchResults.push(cpu_time[i][1] + ": \t" + cpu_time[i][0] + " ms");
             // }
-
-            var cpu_time = [[HilbertTimeTotal, "Hilbert"], [ZTimeTotal, "Z-Order"], [RowMajorTimeTotal, "Row-Major"], [RandomTimeTotal, "Random"]].sort();
-            for(var i = 0; i < cpu_time.length; i++){
-                myViewModel.searchResults.push(cpu_time[i][1] + ": \t" + cpu_time[i][0] + " ms");
-            }
-            // myViewModel.searchResults.push(hilbertPrefix + "Hilbert: \t" + HilbertTimeTotal + "ms");
-            // myViewModel.searchResults.push(ZPrefix + "Z-Order: \t" + ZTimeTotal + "ms");
-            // myViewModel.searchResults.push("Row-Major: \t" + RowMajorTimeTotal + "ms");
-            // myViewModel.searchResults.push("Random: \t" + RandomTimeTotal + "ms");
-            var search_its = [[HilbertTree.recursiveSearchIterations, "Hilbert"], [ZTree.recursiveSearchIterations, "Z-Order"], [RowMajorTree.recursiveSearchIterations, "Row-Major"], [RandomTree.recursiveSearchIterations, "Random"]].sort();
+            var search_its = [[HilbertTree.recursiveSearchIterations, "Hilbert"], [ZTree.recursiveSearchIterations, "Z-Order"], [RowMajorTree.recursiveSearchIterations, "Row-Major"],  [ScanTree.recursiveSearchIterations, "Scan"], [RandomTree.recursiveSearchIterations, "Random"]].sort();
             for(var i = 0; i < search_its.length; i++){
-                myViewModel.iterationResults.push(search_its[i][1] + ": \t" + search_its[i][0] + " its");
+                myViewModel.iterationResults.push(search_its[i][1] + ": \t" + search_its[i][0] + " calls");
             }
 
 
             HilbertTree.recursiveSearchIterations = 0;
             ZTree.recursiveSearchIterations = 0;
             RowMajorTree.recursiveSearchIterations = 0;
+            ScanTree.recursiveSearchIterations = 0;
             RandomTree.recursiveSearchIterations = 0;
             // alert(HilbertTimeTotal + "/" +  ZTimeTotal)
         }

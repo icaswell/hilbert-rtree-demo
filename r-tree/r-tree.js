@@ -61,6 +61,8 @@ var RTreeRectangle = (function () {
                 return HilbertCurves.toZCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else if (this.distanceMetric == "row-major"){
                 return HilbertCurves.toRowMajorCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
+            } else if (this.distanceMetric == "scan"){
+                return HilbertCurves.toScanCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else if (this.distanceMetric == "random"){
                 return HilbertCurves.toRandomCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else {
@@ -186,6 +188,8 @@ var RTree = (function () {
                 return HilbertCurves.toZCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else if (distanceMetric=="row-major") {
                 return HilbertCurves.toRowMajorCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
+            }  else if (distanceMetric=="scan") {
+                return HilbertCurves.toScanCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else if (distanceMetric=="random") {
                 return HilbertCurves.toRandomCoordinates(maxCoordinate - minCoordinate, Math.ceil(rect.x + rect.width * 0.5) - minCoordinate, Math.ceil(rect.y + rect.height * 0.5) - minCoordinate);                
             } else {

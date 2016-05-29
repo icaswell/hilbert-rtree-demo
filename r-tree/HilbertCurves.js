@@ -1,7 +1,8 @@
 var HilbertCurves;
 (function (HilbertCurves) {
-    function toHilbertCoordinates(maxCoordinate, x, y) {
+    function toHilbertCoordinates(maxCoordinate, x, y, scale=1.0) {
         var r = maxCoordinate;
+        x *= scale;
         var mask = (1 << r) - 1;
         var hodd = 0;
         var heven = x ^ y;
@@ -22,14 +23,25 @@ var HilbertCurves;
         return hilbertInterleaveBits(x, y);
     }
     HilbertCurves.toZCoordinates = toZCoordinates;
+
+
     function toRowMajorCoordinates(maxCoordinate, x, y) {
-        return Number(x.toString() + y.toString());
+        return Number(y.toString() + x.toString());
     }   
     HilbertCurves.toRowMajorCoordinates = toRowMajorCoordinates;
+
+    function toScanCoordinates(maxCoordinate, x, y) {
+        xcoord = y%2? maxCoordinate-x : x;
+        return ((y)*maxCoordinate) + xcoord;
+    }   
+    HilbertCurves.toScanCoordinates = toScanCoordinates;    
+
+
     function toRandomCoordinates(maxCoordinate, x, y) {
-        return Math.random();
+        return Math.floor(Math.random()*2*maxCoordinate);
     }   
     HilbertCurves.toRandomCoordinates = toRandomCoordinates;    
+
     function hilbertInterleaveBits(odd, even) {
         var val = 0;
         var max = Math.max(odd, even);

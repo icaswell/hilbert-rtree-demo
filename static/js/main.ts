@@ -30,6 +30,53 @@ function recursiveDrawRectangles( canv: HTMLCanvasElement, rect: RTreeRectangle,
 	}
 }
 
+function showCurve(maxNodes, numberOfNodesPerSide, canvas, batchCreate, renderConstruction, distanceMetric, seed=0) {
+    /*distanceMetric can be "hilbert" or "z-order" or "row-major" or "random"
+    */
+    var tree = new RTree(maxNodes, distanceMetric);
+    var maxX = (canvas.width - 100);
+    var maxY = (canvas.height - 100);
+    var minWidth = 10;
+    var minHeight = 10;
+    var maxWidth = minWidth + 10;
+    var maxHeight = minHeight + 10;
+    var nodes = _.map(_.range(numberOfNodesPerSide*numberOfNodesPerSide), function (i) {
+        var data = {};
+
+        ii = Math.floor(i/numberOfNodesPerSide);
+        jj = i%numberOfNodesPerSide;
+        data.x = ii;
+        data.y = jj;
+        data.width = 10;
+        data.height = 10;
+        data.data = i;
+        return data;
+    });
+    var ctx = canvas.getContext("2d");
+    if (batchCreate) {
+        tree.batchInsert(nodes);
+    }
+    else {
+        if (renderConstruction) {
+            for (var i = 0; i < nodes.length; i++) {
+                setTimeout(function (i) {
+                    tree.insert(nodes[i]);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    recursiveDrawRectangles(canvas, tree.root, 1);
+                }, 100 * i, i);
+            }
+        }
+        else {
+            for (var i = 0; i < nodes.length; i++) {
+                tree.insert(nodes[i]);
+            }
+        }
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    recursiveDrawRectangles(canvas, tree.root, 1);
+    return tree;
+}
+
 function createTree( maxNodes: number, numberOfNodes: number, canvas: HTMLCanvasElement, batchCreate: boolean, renderConstruction: boolean ){
 	var tree = new RTree( maxNodes );
 	var maxX = (canvas.width - 100);

@@ -36,7 +36,12 @@
 			height: 30px;
 			width: 80px;
 			background-color: #ceefaa;
-		}								
+		}
+		INPUT#SeedInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}										
 	</style>
 </head>
 <!-- <body style="background-color:#C3A6D0;"> -->
@@ -47,7 +52,7 @@
 				<h2>Settings</h2>
 				<div class="form-group">
 					<label for="usr">N Nodes:</label>
-					<input type="text" class="form-control" id="NNodesInput" value=40	>
+					<input type="text" class="form-control" id="NNodesInput" value=10>
 				</div>
 				<div class="form-group">
 					<label for="usr">Max Nodes:</label>
@@ -56,7 +61,7 @@
 			
 				<div class="form-group">
 					<label for="usr">N Trials:</label>
-					<input type="text" class="form-control" id="NTrialsInput" value=100>
+					<input type="text" class="form-control" id="NTrialsInput" value=1000>
 				</div>								
 				<div class="form-group">
 					<label for="usr">Locality Binding:</label>
@@ -67,9 +72,13 @@
 					<input type="text" class="form-control" id="ClusterInput" value=0.1>
 				</div>	
 				<div class="form-group">
-					<label for="usr">Number?:</label>
-					<input type="text" class="form-control" id="NumberInput" value=0>
-				</div>									
+					<label for="usr">Number nodes? 0/1:</label>
+					<input type="text" class="form-control" id="NumberInput" value=1>
+				</div>	
+				<div class="form-group">
+					<label for="usr">Random Seed:</label>
+					<input type="text" class="form-control" id="SeedInput" value=0>
+				</div>													
 			</div>
 
 			<div class="col-md-8">
@@ -78,17 +87,25 @@
 				<b><font color="blue"> Hilbert: </font></b>
 					<canvas id="canvas" width="800" height="600"></canvas>
 					</div>
+
 					<b><font color="blue"> Z-Order: </font></b>
 				<div class="row-md-6">
 					<canvas id="canvas2" width="800" height="600"></canvas>
 					</div>	
+
 					<b><font color="blue"> Sweep: </font></b>
 				<div class="row-md-6">
 					<canvas id="canvas3" width="800" height="600"></canvas>
 					</div>
-					<b><font color="blue"> Random: </font></b>
+					
+					<b><font color="blue"> Scan: </font></b>
 				<div class="row-md-6">
 					<canvas id="canvas4" width="800" height="600"></canvas>
+					</div>
+
+					<b><font color="blue"> Random: </font></b>
+				<div class="row-md-6">
+					<canvas id="canvas5" width="800" height="600"></canvas>
 					</div>										
 				<!-- <canvas id="canvas2" width="600" height="400"></canvas> -->
 			</div>	
@@ -102,7 +119,8 @@
 				<h2>Controls</h2>
 				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){createNewTree(); searchResults.removeAll(); iterationResults.removeAll()}">Generate Tree</button>
 				<button type="button" class="btn btn-primary btn-block" data-bind="click: queryTree">Query Tree</button>
-				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){searchResults.removeAll(); iterationResults.removeAll();compareOrderings()}">Compare Ordering Efficiency</button>	
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){searchResults.removeAll(); iterationResults.removeAll();compareOrderings()}">Compare Ordering Efficiency</button>
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: showHilbert">Show Curves</button>	
 
 				<h2>Results</h2>
 				<small data-bind="visible: searchResults().length > 0">The search query intersects with:</small>
