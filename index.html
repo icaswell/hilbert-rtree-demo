@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style type="text/css">
+		html, body, .container-fluid, .row, .row>div {
+			height: 100%;
+		}
+		INPUT#NNodesInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}
+		INPUT#MaxNodesInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}
+		INPUT#NTrialsInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}	
+		INPUT#LocalityInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}	
+		INPUT#ClusterInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}		
+		INPUT#NumberInput {
+			height: 30px;
+			width: 80px;
+			background-color: #ceefaa;
+		}								
+	</style>
+</head>
+<!-- <body style="background-color:#C3A6D0;"> -->
+<body>
+	<div class="container-fluid">
+		<div class="row-md-9">
+			<div class="col-md-2">
+				<h2>Settings</h2>
+				<div class="form-group">
+					<label for="usr">N Nodes:</label>
+					<input type="text" class="form-control" id="NNodesInput" value=40	>
+				</div>
+				<div class="form-group">
+					<label for="usr">Max Nodes:</label>
+					<input type="text" class="form-control" id="MaxNodesInput" value=3>
+				</div>	
+			
+				<div class="form-group">
+					<label for="usr">N Trials:</label>
+					<input type="text" class="form-control" id="NTrialsInput" value=100>
+				</div>								
+				<div class="form-group">
+					<label for="usr">Locality Binding:</label>
+					<input type="text" class="form-control" id="LocalityInput" value=0.9>
+				</div>	
+				<div class="form-group">
+					<label for="usr">Clustering:</label>
+					<input type="text" class="form-control" id="ClusterInput" value=0.1>
+				</div>	
+				<div class="form-group">
+					<label for="usr">Number?:</label>
+					<input type="text" class="form-control" id="NumberInput" value=0>
+				</div>									
+			</div>
+
+			<div class="col-md-8">
+				
+				<div class="row-md-6">
+				<b><font color="blue"> Hilbert: </font></b>
+					<canvas id="canvas" width="800" height="600"></canvas>
+					</div>
+					<b><font color="blue"> Z-Order: </font></b>
+				<div class="row-md-6">
+					<canvas id="canvas2" width="800" height="600"></canvas>
+					</div>	
+					<b><font color="blue"> Row Major: </font></b>
+				<div class="row-md-6">
+					<canvas id="canvas3" width="800" height="600"></canvas>
+					</div>
+					<b><font color="blue"> Random: </font></b>
+				<div class="row-md-6">
+					<canvas id="canvas4" width="800" height="600"></canvas>
+					</div>										
+				<!-- <canvas id="canvas2" width="600" height="400"></canvas> -->
+			</div>	
+
+
+<!-- 			<div class="row-md-6">
+				<canvas id="canvas2" width="600" height="500"></canvas>
+			</div> -->	
+			<div class="col-md-2">								
+
+				<h2>Controls</h2>
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){createNewTree(); searchResults.removeAll(); iterationResults.removeAll()}">Generate Tree</button>
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: queryTree">Query Tree</button>
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){searchResults.removeAll(); iterationResults.removeAll();compareOrderings()}">Compare Ordering Efficiency</button>	
+
+				<h2>Results</h2>
+				<small data-bind="visible: searchResults().length > 0">The search query intersects with:</small>
+				<ul class="list-group" data-bind="foreach: searchResults">
+					<li class="list-group-item" data-bind="text: $data"></li>
+				</ul>
+				<ul class="list-group" data-bind="foreach: iterationResults">
+					<li class="list-group-item" data-bind="text: $data"></li>
+				</ul>				
+				
+			</div>
+		</div>	
+	</div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.5.0/lodash.min.js"></script>
+<script type="text/javascript" src="r-tree/fast-flatten.js"></script>
+<script type="text/javascript" src="libs/knockstrap.min.js"></script>
+<script type="text/javascript" src="r-tree/HilbertCurves.js"></script>
+<script type="text/javascript" src="r-tree/r-tree.js"></script>
+<script type="text/javascript" src="static/js/main.js"></script>
+</body>
+</html>
