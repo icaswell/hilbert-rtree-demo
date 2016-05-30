@@ -2,7 +2,7 @@
 
 This is an implementation of a Hilbert Packed  R-Tree. R-Trees are a special data structure for indexing spatial data. To improve the performance of query operations on the data structure, the R-Tree has been packed using the  space filling [Hilbert Curve](https://en.wikipedia.org/wiki/Hilbert_curve).
 
-* The majority of the logic of the Hilbert tree was written by jorgenkg.  I (icaswell) modified the orderings to include Z-order (etc.) and some of the rendering, and added code to improve the artificial data and the comparison between different curves.
+* The majority of the logic of the Hilbert tree was written by jorgenkg.  I (icaswell) modified the orderings to include other space filling curves (Z-order etc.), made the visualization prettier, added options to improve the artificial data (using momentum and tunneling probabilities as described in the associated paper), added random seeding, added a function to visualize curves, and most importantly added functionality to compare the empirical performance between different spce-filling curves.
 
 ## Demo
 

@@ -260,8 +260,8 @@ $(document).ready(function () {
             for (var i = 0; i < nTrials; i++){
                 queryRectangles.push([canvas.width * pseudoRandom()/2, 
                                  canvas.height * pseudoRandom()/2, 
-                                 canvas.width * pseudoRandom()/8, 
-                                 canvas.height * pseudoRandom()/8]);
+                                 canvas.width * pseudoRandom()/4, 
+                                 canvas.height * pseudoRandom()/4]);
             }
 
             // var d = new Date();
@@ -312,7 +312,7 @@ $(document).ready(function () {
             // for(var i = 0; i < cpu_time.length; i++){
             //     myViewModel.searchResults.push(cpu_time[i][1] + ": \t" + cpu_time[i][0] + " ms");
             // }
-            var search_its = [[HilbertTree.recursiveSearchIterations, "Hilbert"], [ZTree.recursiveSearchIterations, "Z-Order"], [RowMajorTree.recursiveSearchIterations, "Row-Major"],  [ScanTree.recursiveSearchIterations, "Scan"], [RandomTree.recursiveSearchIterations, "Random"]].sort();
+            var search_its = [[HilbertTree.recursiveSearchIterations/nTrials, "Hilbert"], [ZTree.recursiveSearchIterations/nTrials, "Z-Order"], [RowMajorTree.recursiveSearchIterations/nTrials, "Row-Major"],  [ScanTree.recursiveSearchIterations/nTrials, "Scan"], [RandomTree.recursiveSearchIterations/nTrials, "Random"]].sort();
             for(var i = 0; i < search_its.length; i++){
                 myViewModel.iterationResults.push(search_its[i][1] + ": \t" + search_its[i][0] + " calls");
             }

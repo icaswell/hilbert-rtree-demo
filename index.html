@@ -51,40 +51,39 @@
 			<div class="col-md-2">
 				<h2>Settings</h2>
 				<div class="form-group">
-					<label for="usr">N Nodes:</label>
-					<input type="text" class="form-control" id="NNodesInput" value=10>
+					<label for="usr">Number of Leaf Nodes:</label>
+					<input type="text" class="form-control" id="NNodesInput" value=500>
 				</div>
 				<div class="form-group">
-					<label for="usr">Max Nodes:</label>
+					<label for="usr">Node Capacity:</label>
 					<input type="text" class="form-control" id="MaxNodesInput" value=3>
 				</div>	
 			
 				<div class="form-group">
-					<label for="usr">N Trials:</label>
-					<input type="text" class="form-control" id="NTrialsInput" value=1000>
+					<label for="usr">Number of Trials:</label>
+					<input type="text" class="form-control" id="NTrialsInput" value=1>
 				</div>								
 				<div class="form-group">
-					<label for="usr">Locality Binding:</label>
+					<label for="usr">Dataset Inertia:</label>
 					<input type="text" class="form-control" id="LocalityInput" value=0.9>
 				</div>	
 				<div class="form-group">
-					<label for="usr">Clustering:</label>
+					<label for="usr">Tunneling Probability:</label>
 					<input type="text" class="form-control" id="ClusterInput" value=0.1>
 				</div>	
 				<div class="form-group">
 					<label for="usr">Number nodes? 0/1:</label>
-					<input type="text" class="form-control" id="NumberInput" value=1>
+					<input type="text" class="form-control" id="NumberInput" value=0>
 				</div>	
 				<div class="form-group">
 					<label for="usr">Random Seed:</label>
-					<input type="text" class="form-control" id="SeedInput" value=0>
+					<input type="text" class="form-control" id="SeedInput" value=1.0>
 				</div>													
 			</div>
 
 			<div class="col-md-8">
-				
-				<div class="row-md-6">
 				<b><font color="blue"> Hilbert: </font></b>
+				<div class="row-md-6">
 					<canvas id="canvas" width="800" height="600"></canvas>
 					</div>
 
