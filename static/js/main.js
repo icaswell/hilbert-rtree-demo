@@ -70,6 +70,7 @@ function recursiveDrawRectangles(canv, rect, level, color) {
 function createTree(maxNodes, numberOfNodes, canvas, batchCreate, renderConstruction, distanceMetric, seed=0) {
     /*distanceMetric can be "hilbert" or "z-order" or "row-major" or "random"
     */
+    seed = document.getElementById("SeedInput").value;
     if (seed == 0){
         seed = Math.random();
     }
@@ -143,10 +144,8 @@ function showCurve(maxNodes, numberOfNodesPerSide, canvas, batchCreate, renderCo
 
         ii = (Math.floor(i/numberOfNodesPerSide))/numberOfNodesPerSide;
         jj = (i%numberOfNodesPerSide)/numberOfNodesPerSide;
-        alert(i + " " + ii + " " + jj + " ");
         data.x = Math.floor(ii * (maxX - minWidth));
         data.y = Math.floor(jj * (maxY - minHeight));
-        alert(i + " " + data.y + " " + data.x + " ");
         data.width = 10;
         data.height = 10;
 
@@ -203,8 +202,12 @@ function searchTree(tree, x, y, width, height, canvas, viewModel, logResults=1) 
     return results;
 }
 $(document).ready(function () {
-    var canvas = document.getElementById("canvas");
-    var canvas2 = document.getElementById("canvas2");
+    // var canvas = document.getElementById("canvas");
+    // var canvas2 = document.getElementById("canvas2");
+    // var canvas3 = document.getElementById("canvas3");
+    // var canvas4 = document.getElementById("canvas4");
+    // var canva5 = document.getElementById("canvas5");
+    
     var $overlay = $(canvas);
     $overlay.attr("width", $overlay.parent().outerWidth() - 10);
     $overlay.attr("height", $overlay.parent().outerHeight() - 10);

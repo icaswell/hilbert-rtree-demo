@@ -118,8 +118,9 @@
 				<h2>Controls</h2>
 				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){createNewTree(); searchResults.removeAll(); iterationResults.removeAll()}">Generate Tree</button>
 				<button type="button" class="btn btn-primary btn-block" data-bind="click: queryTree">Query Tree</button>
-				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){searchResults.removeAll(); iterationResults.removeAll();compareOrderings()}">Compare Ordering Efficiency</button>
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){searchResults.removeAll(); iterationResults.removeAll();compareOrderings()}">Compare Orderings</button>
 				<button type="button" class="btn btn-primary btn-block" data-bind="click: showHilbert">Show Curves</button>	
+				<button type="button" class="btn btn-primary btn-block" data-bind="click: function(){alert('That\'s all, Folks!'); var c=document.getElementById('canvas');var img = new Image;img.src='http://1.bp.blogspot.com/-xKeQTi6qBAk/Ty8E3SNqcaI/AAAAAAAAAEQ/zj63CCj72uc/s1600/Screen%2BShot%2B2012-02-05%2Bat%2B22.34.03.png';c.getContext('2d').drawImage(img,0,0);document.body.style.backgroundColor = 'yellow'}">Conclude Demo</button>	
 
 				<h2>Results</h2>
 				<small data-bind="visible: searchResults().length > 0">The search query intersects with:</small>
